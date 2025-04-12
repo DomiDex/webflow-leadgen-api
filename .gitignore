@@ -1,8 +1,13 @@
     # Environment variables
         .env
 
+        # Deno lock file (optional but good practice if you use one)
+        # deno.lock
+
+        # Other common ignores
+        node_modules
+
         # Node/Deno modules (if cached locally, though Deno manages globally)
-        node_modules/
         deno-cache/
 
         # IDE specific
