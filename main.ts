@@ -20,22 +20,20 @@ try {
 const env = Deno.env.toObject(); // Use Deno.env after dotenvConfig has populated it
 const port = env.PORT ? parseInt(env.PORT, 10) : 8000;
 // Default to a restrictive origin if not set, emphasize setting it correctly
-const allowedOrigin = env.ALLOWED_ORIGIN || 'http://localhost:3000';
-console.log(`Allowed Origin set to: ${allowedOrigin}`);
-if (allowedOrigin === '*') {
-  console.warn(
-    'WARNING: CORS allows all origins (`*`). This should NOT be used in production.'
-  );
-} else if (allowedOrigin === 'http://localhost:3000') {
-  console.info(
-    "INFO: CORS allows default origin 'http://localhost:3000'. Set ALLOWED_ORIGIN in .env for your specific frontend."
-  );
-}
+// const allowedOrigin = env.ALLOWED_ORIGIN || 'http://localhost:3000'; // We will bypass this temporarily
 
 // --- Application Setup ---
 const app = new Application();
 
 // --- Middleware ---
+
+// *** NEW: Very Early Logger ***
+app.use(async (ctx, next) => {
+  console.log(
+    `[EARLY LOG] Received request: ${ctx.request.method} ${ctx.request.url.pathname}`
+  );
+  await next();
+});
 
 // 1. Logger Middleware
 app.use(async (ctx, next) => {
@@ -57,14 +55,13 @@ app.use(async (ctx, next) => {
   ctx.response.headers.set('X-Response-Time', `${ms}ms`);
 });
 
-// 3. CORS Middleware (Essential for frontend integration)
+// 3. CORS Middleware (MODIFIED)
 app.use(
   oakCors({
-    origin: allowedOrigin,
-    // Example for multiple specific origins:
-    // origin: ["https://your-site.webflow.io", "https://your-custom-domain.com"],
-    optionsSuccessStatus: 200, // For compatibility
-    credentials: true, // Allow cookies if needed in the future
+    // *** Temporarily hardcoding the origin for debugging ***
+    origin: 'https://dominiques-five-star-site-a4409bfdb27d2.webflow.io',
+    optionsSuccessStatus: 200,
+    credentials: true,
   })
 );
 
@@ -118,7 +115,9 @@ app.addEventListener('listen', ({ hostname, port, secure }) => {
   const host = hostname === '0.0.0.0' ? 'localhost' : hostname ?? 'localhost'; // Use localhost for 0.0.0.0
   console.log(`-------------------------------------------------------`);
   console.log(`🚀 Server running! Access it at: ${protocol}${host}:${port}`);
-  console.log(`🔌 CORS configured for origin: ${allowedOrigin}`);
+  console.log(
+    `🔌 CORS configured for origin: ${'https://dominiques-five-star-site-a4409bfdb27d2.webflow.io'}`
+  );
   console.log(`-------------------------------------------------------`);
 });
 
