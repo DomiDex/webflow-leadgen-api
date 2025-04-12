@@ -1,0 +1,14 @@
+    # Environment variables
+        .env
+
+        # Node/Deno modules (if cached locally, though Deno manages globally)
+        node_modules/
+        deno-cache/
+
+        # IDE specific
+        .vscode/
+        .idea/
+
+        # OS specific
+        .DS_Store
+        Thumbs.db
