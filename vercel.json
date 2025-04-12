@@ -2,7 +2,7 @@
   "builds": [
     {
       "src": "main.ts",
-      "use": "@vercel/deno@1.2.0",
+      "use": "@vercel/deno",
       "config": { "memory": 1024 }
     }
   ],
