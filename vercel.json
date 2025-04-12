@@ -1,15 +1,14 @@
-// vercel.json
 {
   "functions": {
     "main.ts": {
-      "runtime": "@vercel/deno@1.2.0", // Use the Vercel Deno runtime
-      "memory": 1024 // Optional: Allocate more memory if needed
+      "runtime": "@vercel/deno@1.2.0",
+      "memory": 1024
     }
   },
   "rewrites": [
     {
-      "source": "/(.*)", // Match all incoming paths
-      "destination": "/main.ts" // Route them to your Deno entrypoint
+      "source": "/(.*)",
+      "destination": "/main.ts"
     }
   ]
 }
