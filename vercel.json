@@ -1,10 +1,11 @@
 {
-  "functions": {
-    "main.ts": {
-      "runtime": "@vercel/deno@1.2.0",
-      "memory": 1024
+  "builds": [
+    {
+      "src": "main.ts",
+      "use": "@vercel/deno@1.2.0",
+      "config": { "memory": 1024 }
     }
-  },
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
