@@ -109,11 +109,14 @@ export class PageSpeedService {
       console.log(`Analysis complete for ${targetUrl}. Scores:`, scores);
       return { scores, analysisData: data }; // Return the full analysis data as well
     } catch (error) {
+      // Log the specific error and rethrow a more general one
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       console.error(
-        `Error calling PageSpeed API or processing response: ${error.message}`
+        `Error calling PageSpeed API or processing response: ${errorMessage}`
       );
-      // Propagate a meaningful error
-      throw new Error(`Failed to analyze URL '${targetUrl}': ${error.message}`);
+      // Rethrow a standard Error for the service layer to handle
+      throw new Error(`Failed to analyze URL '${targetUrl}': ${errorMessage}`);
     }
   }
 }

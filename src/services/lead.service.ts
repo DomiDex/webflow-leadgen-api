@@ -46,8 +46,11 @@ export class LeadService {
       );
       console.log(`PageSpeed analysis finished for ${websiteUrl}.`);
     } catch (error) {
-      console.error(`Analysis failed for ${websiteUrl}: ${error.message}`);
-      // Decide how to handle analysis failure: Create lead with null scores
+      // Log the error with more robust handling
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      console.error(`Analysis failed for ${websiteUrl}: ${errorMessage}`);
+      // Decide how to proceed. Here, we store a structured error.
       analysisResult = {
         scores: {
           performance: null,
@@ -55,9 +58,9 @@ export class LeadService {
           bestPractices: null,
           seo: null,
         },
-        // Store structured error information
+        // Store a structured error object for the frontend/DB
         analysisData: {
-          error: { code: 500, message: `Analysis failed: ${error.message}` },
+          error: { code: 500, message: `Analysis failed: ${errorMessage}` },
         },
       };
     }
@@ -89,11 +92,14 @@ export class LeadService {
         },
       };
     } catch (dbError) {
+      // Log the error with more robust handling
+      const errorMessage =
+        dbError instanceof Error ? dbError.message : String(dbError);
       console.error(
-        `Failed to save lead for ${email} / ${websiteUrl}: ${dbError.message}`
+        `Failed to save lead for ${email} / ${websiteUrl}: ${errorMessage}`
       );
-      // Propagate a more specific error
-      throw new Error(`Database error while saving lead: ${dbError.message}`);
+      // Rethrow a more specific error or handle as needed
+      throw new Error(`Database error while saving lead: ${errorMessage}`);
     }
   }
 
@@ -122,12 +128,15 @@ export class LeadService {
       }
       return success;
     } catch (error) {
+      // Log the error with more robust handling
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       console.error(
-        `Error processing continue request for lead ${id}: ${error.message}`
+        `Error processing continue request for lead ${id}: ${errorMessage}`
       );
-      // Propagate a more specific error
+      // Rethrow a more specific error or handle as needed
       throw new Error(
-        `Failed to update lead status for ID ${id}: ${error.message}`
+        `Failed to update lead status for ID ${id}: ${errorMessage}`
       );
     }
   }
