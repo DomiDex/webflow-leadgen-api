@@ -2,17 +2,21 @@
   "tasks": {
     "start": "deno run --allow-net --allow-env --allow-read main.ts",
     "dev": "deno run --watch --allow-net --allow-env --allow-read main.ts",
-    "test": "deno test --allow-net --allow-env --allow-read --allow-none"
+    "test": "deno test --allow-net --allow-env --allow-read --allow-import --no-check main_test.ts"
   },
   "imports": {
     "std/": "https://deno.land/std@0.220.1/",
+    "std/assert": "https://deno.land/std@0.220.1/assert/mod.ts",
+    "std/testing/": "https://deno.land/std@0.220.1/testing/",
+    "std/testing/mock": "https://deno.land/std@0.220.1/testing/mock.ts",
     "superoak": "https://deno.land/x/superoak@4.8.1/mod.ts",
     "oak": "https://deno.land/x/oak@v12.6.1/mod.ts"
   },
   "compilerOptions": {
     "allowJs": true,
-    "lib": ["deno.window"],
-    "strict": true
+    "lib": ["deno.ns", "deno.window", "dom"],
+    "strict": true,
+    "types": ["deno"]
   },
   "lint": {
     "files": {

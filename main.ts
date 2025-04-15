@@ -1,3 +1,5 @@
+/// <reference lib="deno.ns" />
+
 import { Application, oakCors, dotenvConfig, Status } from './deps.ts';
 import leadRouter from './src/routes/lead.routes.ts';
 
@@ -6,6 +8,7 @@ import leadRouter from './src/routes/lead.routes.ts';
 try {
   dotenvConfig({ export: true, path: './.env' }); // Explicitly point to .env in root
 } catch (e) {
+  // @ts-ignore - Deno namespace
   if (e instanceof Deno.errors.NotFound) {
     console.warn(
       '.env file not found. Relying on system environment variables.'
@@ -17,6 +20,7 @@ try {
   }
 }
 
+// @ts-ignore - Deno namespace
 const env = Deno.env.toObject(); // Use Deno.env after dotenvConfig has populated it
 const port = env.PORT ? parseInt(env.PORT, 10) : 8000;
 // Default to a restrictive origin if not set, emphasize setting it correctly
@@ -127,6 +131,7 @@ app.addEventListener('listen', ({ hostname, port, secure }) => {
     await app.listen({ port });
   } catch (error) {
     console.error('Fatal error starting server:', error);
+    // @ts-ignore - Deno namespace 
     Deno.exit(1);
   }
 })();
