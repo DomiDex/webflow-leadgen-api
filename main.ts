@@ -23,7 +23,7 @@ const port = env.PORT ? parseInt(env.PORT, 10) : 8000;
 // const allowedOrigin = env.ALLOWED_ORIGIN || 'http://localhost:3000'; // We will bypass this temporarily
 
 // --- Application Setup ---
-const app = new Application();
+export const app = new Application();
 
 // --- Middleware ---
 

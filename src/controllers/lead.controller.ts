@@ -1,7 +1,10 @@
-import { Context, Status } from '../../deps.ts';
+import { Context, Status, RouterContext } from '../../deps.ts';
 import { LeadService } from '../services/lead.service.ts';
 import type { PageSpeedAnalysisRequest } from '../types/index.ts';
 import { isValidEmail } from '../utils/validators.ts'; // Import specific validators
+
+// Define the specific route path used in the router for typing
+const CONTINUE_ROUTE = '/api/v1/leads/:id/continue';
 
 export class LeadController {
   // Use private readonly for dependencies
@@ -115,8 +118,8 @@ export class LeadController {
     }
   }
 
-  // Handler for POST /leads/:id/continue
-  async handleContinue(ctx: Context) {
+  // Handler for PATCH /leads/:id/continue
+  async handleContinue(ctx: RouterContext<typeof CONTINUE_ROUTE>) {
     try {
       const idParam = ctx.params.id;
       if (!idParam) {
