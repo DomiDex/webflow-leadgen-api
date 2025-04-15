@@ -1,0 +1,37 @@
+{
+  "tasks": {
+    "start": "deno run --allow-net --allow-env --allow-read main.ts",
+    "dev": "deno run --watch --allow-net --allow-env --allow-read main.ts",
+    "test": "deno test --allow-net --allow-env --allow-read --allow-none"
+  },
+  "imports": {
+    "std/": "https://deno.land/std@0.220.1/",
+    "superoak": "https://deno.land/x/superoak@4.8.1/mod.ts",
+    "oak": "https://deno.land/x/oak@v12.6.1/mod.ts"
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "lib": ["deno.window"],
+    "strict": true
+  },
+  "lint": {
+    "files": {
+      "include": ["**/*.ts"]
+    },
+    "rules": {
+      "tags": ["recommended"]
+    }
+  },
+  "fmt": {
+    "files": {
+      "include": ["**/*.ts"]
+    },
+    "options": {
+      "useTabs": false,
+      "lineWidth": 80,
+      "indentWidth": 2,
+      "singleQuote": true,
+      "proseWrap": "preserve"
+    }
+  }
+}
