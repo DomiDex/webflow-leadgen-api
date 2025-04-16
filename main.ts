@@ -23,8 +23,17 @@ try {
 // @ts-ignore - Deno namespace
 const env = Deno.env.toObject(); // Use Deno.env after dotenvConfig has populated it
 const port = env.PORT ? parseInt(env.PORT, 10) : 8000;
-// Default to a restrictive origin if not set, emphasize setting it correctly
-// const allowedOrigin = env.ALLOWED_ORIGIN || 'http://localhost:3000'; // We will bypass this temporarily
+// Define allowedOrigin using environment variable or fallback
+const allowedOrigin = env.ALLOWED_ORIGIN; 
+
+if (!allowedOrigin) {
+  console.warn(
+    'WARNING: ALLOWED_ORIGIN environment variable not set. CORS might not function as expected in production. Falling back to a default origin for local development (currently commented out).'
+  );
+  // If you need a default for local dev, uncomment below:
+  // allowedOrigin = 'http://localhost:3000'; // Example default
+  // Consider if a default is truly needed or if it should fail/restrict if not set.
+}
 
 // --- Application Setup ---
 export const app = new Application();
@@ -62,8 +71,8 @@ app.use(async (ctx, next) => {
 // 3. CORS Middleware (MODIFIED)
 app.use(
   oakCors({
-    // *** Temporarily hardcoding the origin for debugging ***
-    origin: 'https://dominiques-five-star-site-a4409bfdb27d2.webflow.io',
+    // Use the environment variable or the fallback
+    origin: allowedOrigin, // Use the variable here
     optionsSuccessStatus: 200,
     credentials: true,
   })
@@ -119,9 +128,16 @@ app.addEventListener('listen', ({ hostname, port, secure }) => {
   const host = hostname === '0.0.0.0' ? 'localhost' : hostname ?? 'localhost'; // Use localhost for 0.0.0.0
   console.log(`-------------------------------------------------------`);
   console.log(`🚀 Server running! Access it at: ${protocol}${host}:${port}`);
-  console.log(
-    `🔌 CORS configured for origin: ${'https://dominiques-five-star-site-a4409bfdb27d2.webflow.io'}`
-  );
+  // Update console log to show the actual origin being used
+  if (allowedOrigin) {
+    console.log(
+      `🔌 CORS configured for origin: ${allowedOrigin}`
+    );
+  } else {
+    console.log(
+      `🔌 CORS origin not explicitly set via ALLOWED_ORIGIN.`
+    );
+  }
   console.log(`-------------------------------------------------------`);
 });
 
